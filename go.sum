@@ -1,0 +1,8 @@
+github.com/maloquacious/dem2hm v1.1.0 h1:1cuXnLZnN32c31r9h3m9qlxGQgQ7UjOlBCmEYDSIQ3M=
+github.com/maloquacious/dem2hm v1.1.0/go.mod h1:wxZVDKOK+AJZXnSEqQCFURBL8OVrGfrajN/VIrqxdkY=
+github.com/maloquacious/hexg v1.3.0 h1:+CYdRF/+2bu6Y+NGjdR8TD+4YiWcCiNiLFJTdAtQlVw=
+github.com/maloquacious/hexg v1.3.0/go.mod h1:Un6Fvo4X/rCr5WTG4abr4Bos/9h7NyBvHqK4q5Ok4iY=
+github.com/maloquacious/hmz2ele v0.2.0 h1:u8rmtFpH0nF6KkwCTflK6KhEvdcNMj6hFZP81CWvRuU=
+github.com/maloquacious/hmz2ele v0.2.0/go.mod h1:KqLRS1bxEC32a2nyTpOXT/wWOFoCWhjgcurUK0qn+Mw=
+github.com/maloquacious/semver v0.4.1 h1:qwMBcA9VfkD1KsPIMcX7KW9/rnBpBQBbTTcZhlgOIgc=
+github.com/maloquacious/semver v0.4.1/go.mod h1:0VQ90ipG1SLXCDcQo1bgYTBIpvXsEiNOnEF5Bs/HRYY=
