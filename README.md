@@ -37,6 +37,18 @@ A full run on the Panama heightmap (189 million pixels) takes about 14 seconds a
 
 The result is a network in which every vertex has at most one outflow and every path leads to a river mouth.
 
+## River density
+
+The default threshold, 50 km² of source ground, gives the Panama campaign map a dense network: 4,667 river edges for about 9,980 land hexes, roughly one river edge for every two land hexes.
+The campaign starts with this setting on purpose.
+Most rivers run from the central mountains to the coasts, across the map's north–south axis, so overland travel along the isthmus crosses river after river.
+That slows north–south movement and pushes players to invest in ships, as travel along the isthmus did historically.
+A larger threshold thins the network, keeping only the bigger rivers, if play shows it is too dense.
+
+Rivers cross lakes in a straight line, because a lake's surface is one flat and flat resolution routes water straight toward the outlet.
+Gatun Lake shows this.
+It is left as is for now; marking lakes is a later step.
+
 ## Barriers
 
 A barrier undoes earthworks that would otherwise shape the drainage.
