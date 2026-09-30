@@ -131,7 +131,7 @@ func run(args []string, stdout io.Writer) error {
 	phase("drainage")
 	links := h.Rivers(thresholdPixels)
 	phase("river links")
-	edges := hmz2riv.Snap(h, g, links)
+	edges, snapped := hmz2riv.Snap(h, g, links)
 	phase("snap to hex edges")
 
 	mouths := 0
@@ -191,6 +191,8 @@ func run(args []string, stdout io.Writer) error {
 	fmt.Fprintf(stdout, "flat pixels:        %d\n", h.FlatPixels)
 	fmt.Fprintf(stdout, "river links:        %d (%d mouths)\n", len(links), mouths)
 	fmt.Fprintf(stdout, "river edges:        %d (%.0f km of campaign river)\n", len(edges), float64(len(edges))*g.Side*hexKm)
+	fmt.Fprintf(stdout, "single-vertex links: %d (%d mouths)\n", snapped.SingleVertexLinks, snapped.SingleVertexMouths)
+	fmt.Fprintf(stdout, "extended links:     %d (%d edges)\n", snapped.Extended, snapped.ExtensionEdges)
 	for _, t := range traces {
 		x, y, err := hmz2riv.PixelFromLonLat(hm, t[0], t[1])
 		if err != nil {

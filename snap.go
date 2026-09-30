@@ -17,6 +17,18 @@ type RiverEdge struct {
 	Acc      uint32
 }
 
+// SnapReport counts how snapping placed the links.
+type SnapReport struct {
+	// SingleVertexLinks counts the links whose pixels all snap to one
+	// vertex, so they place no edge; SingleVertexMouths counts those that
+	// are mouths, whose vertex joins the network as a river mouth.
+	SingleVertexLinks, SingleVertexMouths int
+	// Extended counts the links continued to the nearest network vertex
+	// because they ended short of the network, and ExtensionEdges the edges
+	// that added.
+	Extended, ExtensionEdges int
+}
+
 // maxGap is the most edges snapping will insert between two consecutive
 // river vertices. Consecutive pixels are never more than a few vertices
 // apart, so a longer gap means something is wrong and the link is cut.
@@ -31,7 +43,12 @@ const maxGap = 16
 // vertices are filled with the shortest path along hex edges, and loops are
 // cut out. A link stops at the first vertex already in the network, which
 // is where it joins the river it flows into.
-func Snap(h *Hydrology, g hmz2ele.Grid, links []Link) []RiverEdge {
+//
+// A link whose pixels all snap to one vertex places no edge. Its vertex
+// joins the network only if the link is a mouth, so a river flowing into a
+// short mouth link ends at that vertex, on the shore.
+func Snap(h *Hydrology, g hmz2ele.Grid, links []Link) ([]RiverEdge, SnapReport) {
+	var rep SnapReport
 	order := make([]int, len(links))
 	for i := range order {
 		order[i] = i
@@ -47,9 +64,12 @@ func Snap(h *Hydrology, g hmz2ele.Grid, links []Link) []RiverEdge {
 		l := links[li]
 		path, accs := snapLink(h, g, l, inNetwork)
 		if len(path) > 0 && !l.Mouth && !inNetwork[path[len(path)-1]] {
-			// The link's confluence vertex was cut out of the river it joins
-			// (as part of a loop), so connect to the nearest network vertex.
+			// The link ended short of the river it flows into: a gap wider
+			// than maxGap cut it off, or the link below it placed no vertex.
+			// Connect to the nearest network vertex.
 			if tail := pathTo(path[len(path)-1], func(v hmz2ele.VertexKey) bool { return inNetwork[v] }); tail != nil {
+				rep.Extended++
+				rep.ExtensionEdges += len(tail)
 				for _, v := range tail {
 					path = append(path, v)
 					accs = append(accs, accs[len(accs)-1])
@@ -65,9 +85,18 @@ func Snap(h *Hydrology, g hmz2ele.Grid, links []Link) []RiverEdge {
 				edges[e] = RiverEdge{Edge: e, From: path[k], To: path[k+1], Acc: accs[k+1]}
 			}
 		}
-		if len(path) < 2 {
-			// Too short to leave its first vertex: no edges, and no vertex
-			// for later links to join.
+		if len(path) == 1 {
+			// Too short to leave its first vertex: no edges. A mouth's
+			// vertex is where the river meets the sea, so rivers flowing
+			// into it end there; any other link leaves no vertex to join.
+			rep.SingleVertexLinks++
+			if l.Mouth {
+				rep.SingleVertexMouths++
+				inNetwork[path[0]] = true
+			}
+			continue
+		}
+		if len(path) == 0 {
 			continue
 		}
 		for _, v := range path {
@@ -86,7 +115,7 @@ func Snap(h *Hydrology, g hmz2ele.Grid, links []Link) []RiverEdge {
 			cmp.Compare(a.Edge.Side, b.Edge.Side),
 		)
 	})
-	return out
+	return out, rep
 }
 
 // snapLink returns the link's vertex path and the largest drainage area
