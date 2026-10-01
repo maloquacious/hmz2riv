@@ -51,7 +51,7 @@ The result is a network in which every vertex has at most one outflow and every 
 
 ## River density
 
-The default threshold, 50 km² of source ground, gives the Panama campaign map a dense network: 4,644 river edges for about 9,980 land hexes, roughly one river edge for every two land hexes.
+The default threshold, 50 km² of source ground, gives the Panama campaign map a dense network: 4,604 river edges for about 9,980 land hexes, roughly one river edge for every two land hexes.
 The campaign starts with this setting on purpose.
 Most rivers run from the central mountains to the coasts, across the map's north–south axis, so overland travel along the isthmus crosses river after river.
 That slows north–south movement and pushes players to invest in ships, as travel along the isthmus did historically.
@@ -79,13 +79,13 @@ Without it, the divide still exists, but falls wherever flat resolution happens 
 
 ```json
 {
-  "hmz2riv_version": "0.2.0",
+  "hmz2riv_version": "0.3.0",
   "heightmap": { "file_name": "pandemokh.hmz", "metadata": { ... } },
   "grid": { "apothem_px": 48, "side_px": 55.43, "columns": 106, "rows": 222 },
   "hydrology": { "threshold_km2": 50, "pixel_area_m2": 943.8, "threshold_pixels": 52977, "barriers": [ "..." ], "method": "..." },
-  "stats": { "barrier_pixels": 291, "filled_pixels": 1728, "flat_pixels": 12506022, "links": 758, "mouths": 132, "river_edges": 4644 },
+  "stats": { "barrier_pixels": 291, "filled_pixels": 1728, "flat_pixels": 12506022, "links": 758, "mouths": 132, "river_edges": 4604 },
   "edges": [
-    { "col": 91, "row": 9, "side": "ne", "from": { "col": 92, "row": 8, "corner": "west" }, "to": { "col": 91, "row": 9, "corner": "east" }, "drainage_km2": 252.5 },
+    { "col": 91, "row": 9, "side": "ne", "from": { "col": 92, "row": 9, "corner": "west" }, "to": { "col": 91, "row": 9, "corner": "east" }, "drainage_km2": 478.3 },
     ...
   ]
 }
